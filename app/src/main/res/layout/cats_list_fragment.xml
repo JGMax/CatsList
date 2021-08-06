@@ -14,11 +14,11 @@
         tools:listitem="@layout/cats_list_item"/>
 
     <Button
-        android:id="@+id/load_button"
+        android:id="@+id/favourites_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/load_more_btn"
+        android:text="@string/favourites_btn"
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

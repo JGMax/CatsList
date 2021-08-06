@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">CatsList</string>
-    <string name="load_more_btn">Load more</string>
+    <string name="favourites_btn">Favourites</string>
     <string name="cat_image_view_description">cat</string>
 </resources>

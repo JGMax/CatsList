@@ -15,7 +15,7 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
     private val catsList: MutableList<CatsListItem> = mutableListOf()
 
     override fun fetchCatsList(catsApi: CatsApi, limit: Int) {
-        viewState.onNewDataRequest()
+        viewState.onStartRequest()
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val newList = catsApi.getCatsList(limit)

@@ -2,6 +2,7 @@ package gortea.jgmax.catslist.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,12 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     private val binding: CatsListFragmentBinding
         get() = requireNotNull(_binding)
 
-    private val adapter: CatsListAdapter = CatsListAdapter()
+    private val adapter: CatsListAdapter = CatsListAdapter(
+        loadingOffset = CATS_LOADING_OFFSET,
+        onLoad = {
+            fetchCatsList()
+        }
+    )
 
     @InjectPresenter
     lateinit var presenter: CatsRemoteListPresenter
@@ -35,7 +41,6 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         savedInstanceState: Bundle?
     ): View {
         _binding = CatsListFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -46,11 +51,16 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         } else {
             adapter.submitList(presenter.getList())
         }
+        binding.favouritesButton.setOnClickListener { onFavouritesClick() }
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun onFavouritesClick() {
+        fetchCatsList()
     }
 
     private fun fetchCatsList() {
@@ -71,10 +81,11 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         }
     }
 
-    // View Impl
-    override fun onNewDataRequest() {
-        binding.loadButton.isEnabled = false
+    override fun onStartRequest() {
+        adapter.loadingStarted()
     }
+
+    // View Impl
 
     override fun updateList(items: List<CatsListItem>?) {
         if (items != null) {
@@ -90,15 +101,15 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     }
 
     override fun openFragment(fragment: MvpAppCompatFragment) {
-        //open fragment
+        //todo open fragment
     }
 
     override fun onSuccessRequest() {
-        binding.loadButton.isEnabled = true
+        adapter.loadingFinished()
     }
 
     override fun <T> onErrorRequest(message: T) {
-        binding.loadButton.isEnabled = true
+        adapter.loadingFinished()
         val text = when(message) {
             is String -> message
             is Int -> getString(message)
