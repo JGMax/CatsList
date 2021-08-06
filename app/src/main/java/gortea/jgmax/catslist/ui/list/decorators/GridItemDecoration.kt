@@ -15,8 +15,11 @@ class GridItemDecoration(
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val columns = (parent.layoutManager as? GridLayoutManager)?.spanCount ?: 1
         val rows = parent.adapter?.itemCount?.div(columns) ?: 1
+        val holder = parent.getChildViewHolder(view)
 
-        val pos = parent.getChildAdapterPosition(view).takeIf { it != RecyclerView.NO_POSITION } ?: return
+        val pos = parent
+            .getChildAdapterPosition(view)
+            .takeIf { it != RecyclerView.NO_POSITION } ?: holder.oldPosition
 
         fun setTopSpacing() {
             if (pos / columns + 1 == 1) {
