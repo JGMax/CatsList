@@ -1,5 +1,6 @@
 package gortea.jgmax.catslist.ui.presenters
 
+import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import gortea.jgmax.catslist.data.local.cats.constants.CATS_PAGE_LIMIT
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+@InjectViewState
 class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>() {
     private val catsList: MutableList<CatsListItem> = mutableListOf()
 
