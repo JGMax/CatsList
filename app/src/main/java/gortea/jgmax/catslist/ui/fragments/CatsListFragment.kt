@@ -13,9 +13,7 @@ import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
-import gortea.jgmax.catslist.ui.list.decorators.HorizontalItemDecorator
-import gortea.jgmax.catslist.ui.list.decorators.VerticalItemDecorator
-import gortea.jgmax.catslist.ui.presenters.CatsRemoteListPresenter
+import gortea.jgmax.catslist.ui.presenters.implementations.CatsRemoteListPresenter
 import gortea.jgmax.catslist.ui.view.CatsRemoteListView
 import gortea.jgmax.catslist.utils.toPx
 import moxy.MvpAppCompatFragment
@@ -45,6 +43,8 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         setupRecyclerView(binding.catsList)
         if (savedInstanceState == null) {
             fetchCatsList()
+        } else {
+            adapter.submitList(presenter.getList())
         }
     }
 
