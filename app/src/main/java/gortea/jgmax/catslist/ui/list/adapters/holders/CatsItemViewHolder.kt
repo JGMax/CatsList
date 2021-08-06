@@ -1,4 +1,4 @@
-package gortea.jgmax.catslist.ui.adapters.holders
+package gortea.jgmax.catslist.ui.list.adapters.holders
 
 class CatsItemViewHolder {
 }

@@ -1,4 +1,4 @@
-package gortea.jgmax.catslist.ui.adapters
+package gortea.jgmax.catslist.ui.list.adapters
 
 class CatsListAdapter {
 }
