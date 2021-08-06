@@ -1,7 +1,8 @@
-package gortea.jgmax.catslist
+package gortea.jgmax.catslist.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import gortea.jgmax.catslist.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
