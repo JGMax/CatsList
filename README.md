@@ -9,7 +9,8 @@ Stack
 * Kotlin
 * MVP
 * Moxy
-* Retrofit
+* Glide
+* Retrofit, OkHttp
 * Room
 * Coroutines
 * Android SDK
