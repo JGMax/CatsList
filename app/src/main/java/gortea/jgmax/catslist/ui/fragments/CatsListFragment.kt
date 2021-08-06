@@ -12,6 +12,7 @@ import gortea.jgmax.catslist.data.local.cats.constants.*
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
+import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
 import gortea.jgmax.catslist.ui.list.decorators.HorizontalItemDecorator
 import gortea.jgmax.catslist.ui.list.decorators.VerticalItemDecorator
 import gortea.jgmax.catslist.ui.presenters.CatsRemoteListPresenter
@@ -62,16 +63,9 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         view.let {
             it.adapter = this.adapter
             it.addItemDecoration(
-                HorizontalItemDecorator(
-                    leftDivider = ITEM_LEFT_MARGIN_DP.toPx(it.context),
-                    rightDivider = ITEM_RIGHT_MARGIN_DP.toPx(it.context)
-                )
-            )
-            it.addItemDecoration(
-                VerticalItemDecorator(
-                    topDivider = ITEM_TOP_MARGIN_DP.toPx(it.context),
-                    mediumDivider = ITEM_MEDIUM_VERTICAL_MARGIN_DP.toPx(it.context),
-                    bottomDivider = ITEM_BOTTOM_MARGIN_DP.toPx(it.context)
+                GridItemDecoration(
+                    spacing = ITEM_SPACING_DP.toPx(requireContext()),
+                    margin = ITEM_MARGIN_DP.toPx(requireContext())
                 )
             )
         }
