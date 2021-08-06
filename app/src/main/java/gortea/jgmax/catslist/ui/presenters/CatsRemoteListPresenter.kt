@@ -1,7 +1,6 @@
 package gortea.jgmax.catslist.ui.presenters
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
+
 import gortea.jgmax.catslist.data.local.cats.constants.CATS_PAGE_LIMIT
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
@@ -9,6 +8,8 @@ import gortea.jgmax.catslist.ui.view.CatsRemoteListView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import java.lang.Exception
 
 @InjectViewState

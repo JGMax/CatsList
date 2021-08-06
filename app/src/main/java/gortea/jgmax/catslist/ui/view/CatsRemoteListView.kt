@@ -1,11 +1,11 @@
 package gortea.jgmax.catslist.ui.view
 
 import android.content.Intent
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
+import moxy.MvpAppCompatFragment
+import moxy.MvpView
+import moxy.viewstate.strategy.OneExecutionStateStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(value = OneExecutionStateStrategy::class)
 interface CatsRemoteListView : MvpView {

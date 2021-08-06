@@ -22,8 +22,8 @@ class VerticalItemDecorator(
         val adapter = parent.adapter ?: return
 
         outRect.apply {
-            top = if(adapter.hasPrevious(position)) mediumDivider / 2 else topDivider
-            bottom = if(adapter.hasNext(position)) mediumDivider / 2 else bottomDivider
+            top = if(adapter.hasPrevious(parent, position)) mediumDivider / 2 else topDivider
+            bottom = if(adapter.hasNext(parent, position)) mediumDivider / 2 else bottomDivider
         }
     }
 }
