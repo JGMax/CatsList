@@ -7,6 +7,8 @@ Stack
 --------
 
 * Kotlin
+* MVP
+* Moxy
 * Retrofit
 * Room
 * Coroutines
