@@ -1,4 +1,4 @@
-package gortea.jgmax.catslist.data.local.keys
+package gortea.jgmax.catslist.data.local.constants
 
 import gortea.jgmax.catslist.BuildConfig
 

@@ -1,4 +1,4 @@
-package gortea.jgmax.catslist.data.remote.cats.additional
+package gortea.jgmax.catslist.data.remote.cats.model.additional
 
 import com.google.gson.annotations.SerializedName
 
