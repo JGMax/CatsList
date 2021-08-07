@@ -1,5 +1,7 @@
 package gortea.jgmax.catslist.ui.presenters.implementations
 
+import android.util.Log
+import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.ui.presenters.CatsListPresenterRemote
@@ -21,12 +23,13 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
                 val newList = catsApi.getCatsList(limit)
                 catsList.addAll(newList)
                 launch(Dispatchers.Main) {
-                    viewState.onSuccessRequest()
                     viewState.updateList(catsList)
+                    viewState.onSuccessRequest()
                 }
             } catch (e: Exception) {
                 launch(Dispatchers.Main) {
-                    viewState.onErrorRequest(e.localizedMessage)
+                    viewState.onErrorRequest(R.string.connection_error)
+                    e.printStackTrace()
                 }
             }
         }

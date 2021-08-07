@@ -27,9 +27,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
 
     private val adapter: CatsListAdapter = CatsListAdapter(
         loadingOffset = CATS_LOADING_OFFSET,
-        onLoad = {
-            fetchCatsList()
-        }
+        onLoad = { fetchCatsList() }
     )
 
     @InjectPresenter
