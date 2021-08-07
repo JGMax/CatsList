@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.catslist.CatsApp
 import gortea.jgmax.catslist.data.local.cats.constants.*
@@ -14,6 +15,8 @@ import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
+import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManager
+import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManagerImpl
 import gortea.jgmax.catslist.ui.presenters.implementations.CatsRemoteListPresenter
 import gortea.jgmax.catslist.ui.view.CatsRemoteListView
 import gortea.jgmax.catslist.utils.toPx
@@ -29,6 +32,12 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         loadingOffset = CATS_LOADING_OFFSET,
         onLoad = { fetchCatsList() }
     )
+
+    private val layoutManager: FooterGridLayoutManager by lazy {
+        FooterGridLayoutManagerImpl(GridLayoutManager(requireContext(), CATS_LIST_SPAN_COUNT)).also {
+            it.showFooter()
+        }
+    }
 
     @InjectPresenter
     lateinit var presenter: CatsRemoteListPresenter
@@ -69,6 +78,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     // RecyclerView setup
     private fun setupRecyclerView(view: RecyclerView) {
         view.let {
+            it.layoutManager = layoutManager.getLayoutManager()
             it.adapter = this.adapter
             it.addItemDecoration(
                 GridItemDecoration(

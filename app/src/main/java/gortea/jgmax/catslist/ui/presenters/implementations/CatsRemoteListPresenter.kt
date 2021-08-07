@@ -1,6 +1,5 @@
 package gortea.jgmax.catslist.ui.presenters.implementations
 
-import android.util.Log
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem

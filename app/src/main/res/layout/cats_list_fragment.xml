@@ -9,8 +9,8 @@
         android:id="@+id/catsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:spanCount="2"
         tools:listitem="@layout/cats_list_item"/>
 
     <Button
