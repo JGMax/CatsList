@@ -58,8 +58,7 @@ class CatsListAdapter(
     }
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        val pos =
-            holder.adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: holder.oldPosition
+        val pos = holder.adapterPosition
         val limit = itemCount - loadingOffset - 1
         if (pos >= limit && !isLoading) {
             onLoad?.invoke()

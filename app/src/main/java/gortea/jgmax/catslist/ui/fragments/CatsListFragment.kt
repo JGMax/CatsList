@@ -89,11 +89,13 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         }
     }
 
-    override fun onStartRequest() {
-        adapter.loadingStarted()
-    }
+
 
     // View Impl
+    override fun onStartRequest() {
+        adapter.loadingStarted()
+        Log.e("Request", "Started")
+    }
 
     override fun updateList(items: List<CatsListItem>?) {
         if (items != null) {
