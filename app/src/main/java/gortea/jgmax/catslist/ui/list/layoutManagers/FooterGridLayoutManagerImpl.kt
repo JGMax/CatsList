@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 class FooterGridLayoutManagerImpl(
     private val layoutManager: GridLayoutManager
 ) : FooterGridLayoutManager {
+    override var spanCount: Int
+        get() = layoutManager.spanCount
+        set(value) { layoutManager.spanCount = value}
     private var showFooter = false
 
     init {

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_card_view"
     android:layout_width="match_parent"
-    android:layout_height="280dp"
+    android:layout_height="240dp"
     app:cardCornerRadius="8dp">
 
     <ImageView

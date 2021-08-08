@@ -16,9 +16,11 @@ class CatsListAdapter(
     private val onLoad: (() -> Unit)? = null
 ) : ListAdapter<CatsListItem, RecyclerView.ViewHolder>(comparator) {
     private var isLoading = false
+    private var updateWithError = false
 
-    fun loadingFinished() {
+    fun loadingFinished(withError: Boolean = false) {
         isLoading = false
+        updateWithError = withError
     }
 
     fun loadingStarted() {

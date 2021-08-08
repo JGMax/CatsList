@@ -1,6 +1,7 @@
 package gortea.jgmax.catslist.ui.fragments
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,6 +53,11 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        layoutManager.spanCount = when(resources.configuration.orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> 2
+            Configuration.ORIENTATION_LANDSCAPE -> 3
+            else -> 2
+        }
         setupRecyclerView(binding.catsList)
         if (savedInstanceState == null) {
             fetchCatsList()
