@@ -12,5 +12,5 @@ Stack
 * Glide
 * Retrofit, OkHttp
 * Room
-* Coroutines
+* RxJava
 * Android SDK
