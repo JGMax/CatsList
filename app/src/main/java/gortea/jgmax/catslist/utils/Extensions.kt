@@ -1,6 +1,8 @@
 package gortea.jgmax.catslist.utils
 
 import android.content.Context
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.roundToInt
@@ -23,5 +25,17 @@ fun RecyclerView.Adapter<*>.hasNext(parent: RecyclerView, position: Int): Boolea
         position < itemCount - 2
     } else {
         position < itemCount - 1
+    }
+}
+
+fun View.hide() {
+    if (isVisible) {
+        visibility = View.GONE
+    }
+}
+
+fun View.show() {
+    if (!isVisible) {
+        visibility = View.VISIBLE
     }
 }

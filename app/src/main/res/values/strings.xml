@@ -3,4 +3,5 @@
     <string name="favourites_btn">Favourites</string>
     <string name="cat_image_view_description">cat</string>
     <string name="connection_error">Connection error</string>
+    <string name="try_again_btn">Try again</string>
 </resources>

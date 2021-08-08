@@ -3,7 +3,6 @@ package gortea.jgmax.catslist.ui.fragments
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.catslist.CatsApp
-import gortea.jgmax.catslist.data.local.cats.constants.*
+import gortea.jgmax.catslist.data.local.cats.constants.CATS_LIST_SPAN_COUNT
+import gortea.jgmax.catslist.data.local.cats.constants.CATS_LOADING_OFFSET
+import gortea.jgmax.catslist.data.local.cats.constants.ITEM_MARGIN_DP
+import gortea.jgmax.catslist.data.local.cats.constants.ITEM_SPACING_DP
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
@@ -20,6 +22,8 @@ import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManager
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManagerImpl
 import gortea.jgmax.catslist.ui.presenters.implementations.CatsRemoteListPresenter
 import gortea.jgmax.catslist.ui.view.CatsRemoteListView
+import gortea.jgmax.catslist.utils.hide
+import gortea.jgmax.catslist.utils.show
 import gortea.jgmax.catslist.utils.toPx
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -35,7 +39,12 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     )
 
     private val layoutManager: FooterGridLayoutManager by lazy {
-        FooterGridLayoutManagerImpl(GridLayoutManager(requireContext(), CATS_LIST_SPAN_COUNT)).also {
+        FooterGridLayoutManagerImpl(
+            GridLayoutManager(
+                requireContext(),
+                CATS_LIST_SPAN_COUNT
+            )
+        ).also {
             it.showFooter()
         }
     }
@@ -53,18 +62,25 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layoutManager.spanCount = when(resources.configuration.orientation) {
+        layoutManager.spanCount = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> 2
             Configuration.ORIENTATION_LANDSCAPE -> 3
             else -> 2
         }
-        setupRecyclerView(binding.catsList)
-        if (savedInstanceState == null) {
-            fetchCatsList()
-        } else {
-            adapter.submitList(presenter.getList())
+        binding.apply {
+            setupRecyclerView(catsList)
+            tryAgainButton.hide()
+            if (savedInstanceState == null && adapter.itemCount == 0) {
+                firstLoadingProgressBar.show()
+                fetchCatsList()
+            } else {
+                firstLoadingProgressBar.hide()
+                adapter.submitList(presenter.getList())
+            }
+            favouritesButton.setOnClickListener { onFavouritesClick() }
+            tryAgainButton.setOnClickListener { onTryAgainClick() }
         }
-        binding.favouritesButton.setOnClickListener { onFavouritesClick() }
+
     }
 
     override fun onDestroyView() {
@@ -73,6 +89,15 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     }
 
     private fun onFavouritesClick() {
+        Toast.makeText(context, "Favourites", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onTryAgainClick() {
+        if (adapter.itemCount != 0) return
+        binding.apply {
+            tryAgainButton.hide()
+            firstLoadingProgressBar.show()
+        }
         fetchCatsList()
     }
 
@@ -95,12 +120,9 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         }
     }
 
-
-
     // View Impl
     override fun onStartRequest() {
         adapter.loadingStarted()
-        Log.e("Request", "Started")
     }
 
     override fun updateList(items: List<CatsListItem>?) {
@@ -121,17 +143,26 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     }
 
     override fun onSuccessRequest() {
-        adapter.loadingFinished()
+        binding.apply {
+            firstLoadingProgressBar.hide()
+            tryAgainButton.hide()
+        }
+        adapter.loadingFinished(withError = false)
     }
 
     override fun <T> onErrorRequest(message: T) {
-        adapter.loadingFinished()
-        val text = when(message) {
+        binding.apply {
+            firstLoadingProgressBar.hide()
+            binding.tryAgainButton.show()
+        }
+        adapter.loadingFinished(withError = true)
+        val text = when (message) {
             is String -> message
             is Int -> getString(message)
             else -> null
         } ?: return
 
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+
     }
 }

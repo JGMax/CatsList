@@ -9,5 +9,5 @@ import retrofit2.http.Query
 interface CatsApi {
     @Headers("x-api-key: $API_KEY")
     @GET("./v1/images/search")
-    suspend fun getCatsList(@Query("limit") limit: Int): List<CatsListItem>
+    suspend fun getCatsList(@Query("limit") limit: Int) : List<CatsListItem>
 }
