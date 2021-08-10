@@ -1,5 +1,6 @@
 package gortea.jgmax.catslist.ui.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,6 +14,7 @@ import gortea.jgmax.catslist.CatsApp
 import gortea.jgmax.catslist.data.local.cats.constants.*
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
+import gortea.jgmax.catslist.ui.delegates.OpenFragmentDelegate
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
 import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
@@ -36,17 +38,17 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
         onLoad = { fetchCatsList() }
     ).also { it.attachClickDelegate(this) }
 
-    private val layoutManager: FooterGridLayoutManager by lazy {
-        FooterGridLayoutManagerImpl(
-            GridLayoutManager(
-                requireContext(),
-                CATS_LIST_SPAN_COUNT_PORTRAIT
-            )
-        ).also { it.showFooter() }
-    }
+    private lateinit var layoutManager: FooterGridLayoutManager
+
+    private var openFragmentDelegate: OpenFragmentDelegate? = null
 
     @InjectPresenter
     lateinit var presenter: CatsRemoteListPresenter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        openFragmentDelegate = context as? OpenFragmentDelegate
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,11 +60,6 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layoutManager.spanCount = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_PORTRAIT -> CATS_LIST_SPAN_COUNT_PORTRAIT
-            Configuration.ORIENTATION_LANDSCAPE -> CATS_LIST_SPAN_COUNT_LANDSCAPE
-            else -> CATS_LIST_SPAN_COUNT_PORTRAIT
-        }
         binding.apply {
             setupRecyclerView(catsList)
             tryAgainButton.hide()
@@ -104,6 +101,20 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
 
     // RecyclerView setup
     private fun setupRecyclerView(view: RecyclerView) {
+        layoutManager = FooterGridLayoutManagerImpl(
+            GridLayoutManager(
+                requireActivity(),
+                CATS_LIST_SPAN_COUNT_PORTRAIT
+            )
+        )
+        with(layoutManager) {
+            spanCount = when (resources.configuration.orientation) {
+                Configuration.ORIENTATION_PORTRAIT -> CATS_LIST_SPAN_COUNT_PORTRAIT
+                Configuration.ORIENTATION_LANDSCAPE -> CATS_LIST_SPAN_COUNT_LANDSCAPE
+                else -> CATS_LIST_SPAN_COUNT_PORTRAIT
+            }
+            showFooter()
+        }
         view.let {
             it.layoutManager = layoutManager.getLayoutManager()
             it.adapter = this.adapter
@@ -135,7 +146,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
     }
 
     override fun openFragment(fragment: MvpAppCompatFragment) {
-        //todo open fragment
+        openFragmentDelegate?.openFragment(fragment)
     }
 
     override fun onSuccessRequest() {

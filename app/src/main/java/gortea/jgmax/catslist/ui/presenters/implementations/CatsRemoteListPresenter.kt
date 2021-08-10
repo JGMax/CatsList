@@ -4,6 +4,7 @@ import android.util.Log
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
+import gortea.jgmax.catslist.ui.fragments.CatsDetailFragment
 import gortea.jgmax.catslist.ui.presenters.CatsListPresenterRemote
 import gortea.jgmax.catslist.ui.view.CatsRemoteListView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,7 +43,7 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
     }
 
     override fun onCatsItemSelected(catsItem: CatsListItem) {
-        Log.e("Item", catsItem.toString())
+        viewState.openFragment(CatsDetailFragment.getInstance(catsItem))
     }
 
     override fun getList(): List<CatsListItem?> = catsList.toList()
