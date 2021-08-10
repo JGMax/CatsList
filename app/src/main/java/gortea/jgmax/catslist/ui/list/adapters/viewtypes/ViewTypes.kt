@@ -1,4 +1,4 @@
-package gortea.jgmax.catslist.ui.list.adapters
+package gortea.jgmax.catslist.ui.list.adapters.viewtypes
 
 import gortea.jgmax.catslist.R
 

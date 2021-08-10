@@ -2,9 +2,8 @@ package gortea.jgmax.catslist.ui.presenters.implementations
 
 import android.util.Log
 import gortea.jgmax.catslist.R
-import gortea.jgmax.catslist.data.local.cats.model.CatsListLocalItem
+import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
-import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.ui.presenters.CatsListPresenterRemote
 import gortea.jgmax.catslist.ui.view.CatsRemoteListView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,7 +15,7 @@ import moxy.MvpPresenter
 
 @InjectViewState
 class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPresenterRemote {
-    private val catsList: MutableList<CatsListLocalItem?> = mutableListOf()
+    private val catsList: MutableList<CatsListItem?> = mutableListOf()
     private val compositeBag = CompositeDisposable()
 
     override fun fetchCatsList(catsApi: CatsApi, limit: Int) {
@@ -24,7 +23,7 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
         val singleRxDisposable: Disposable = catsApi.getCatsList(limit)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { list -> List(list.size) { CatsListLocalItem(list[it].id, list[it].url) } }
+            .map { list -> List(list.size) { CatsListItem(list[it].id, list[it].url) } }
             .subscribe(
                 { newList ->
                     if (catsList.isEmpty()) {
@@ -42,11 +41,11 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
         compositeBag.add(singleRxDisposable)
     }
 
-    override fun onCatsItemSelected(catsItem: CatsListLocalItem) {
-        // todo open fragment
+    override fun onCatsItemSelected(catsItem: CatsListItem) {
+        Log.e("Item", catsItem.toString())
     }
 
-    override fun getList(): List<CatsListLocalItem?> = catsList.toList()
+    override fun getList(): List<CatsListItem?> = catsList.toList()
 
     override fun onDestroy() {
         compositeBag.dispose()

@@ -10,14 +10,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.catslist.CatsApp
-import gortea.jgmax.catslist.data.local.cats.constants.CATS_LIST_SPAN_COUNT
-import gortea.jgmax.catslist.data.local.cats.constants.CATS_LOADING_OFFSET
-import gortea.jgmax.catslist.data.local.cats.constants.ITEM_MARGIN_DP
-import gortea.jgmax.catslist.data.local.cats.constants.ITEM_SPACING_DP
-import gortea.jgmax.catslist.data.local.cats.model.CatsListLocalItem
-import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
+import gortea.jgmax.catslist.data.local.cats.constants.*
+import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
+import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManager
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManagerImpl
@@ -29,7 +26,7 @@ import gortea.jgmax.catslist.utils.toPx
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 
-class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
+class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDelegate {
     private var _binding: CatsListFragmentBinding? = null
     private val binding: CatsListFragmentBinding
         get() = requireNotNull(_binding)
@@ -37,17 +34,15 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
     private val adapter: CatsListAdapter = CatsListAdapter(
         loadingOffset = CATS_LOADING_OFFSET,
         onLoad = { fetchCatsList() }
-    )
+    ).also { it.attachClickDelegate(this) }
 
     private val layoutManager: FooterGridLayoutManager by lazy {
         FooterGridLayoutManagerImpl(
             GridLayoutManager(
                 requireContext(),
-                CATS_LIST_SPAN_COUNT
+                CATS_LIST_SPAN_COUNT_PORTRAIT
             )
-        ).also {
-            it.showFooter()
-        }
+        ).also { it.showFooter() }
     }
 
     @InjectPresenter
@@ -64,9 +59,9 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         layoutManager.spanCount = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_PORTRAIT -> 2
-            Configuration.ORIENTATION_LANDSCAPE -> 3
-            else -> 2
+            Configuration.ORIENTATION_PORTRAIT -> CATS_LIST_SPAN_COUNT_PORTRAIT
+            Configuration.ORIENTATION_LANDSCAPE -> CATS_LIST_SPAN_COUNT_LANDSCAPE
+            else -> CATS_LIST_SPAN_COUNT_PORTRAIT
         }
         binding.apply {
             setupRecyclerView(catsList)
@@ -126,7 +121,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         adapter.loadingStarted()
     }
 
-    override fun updateList(items: List<CatsListLocalItem?>?) {
+    override fun updateList(items: List<CatsListItem?>?) {
         if (items != null) {
             adapter.submitList(items)
         }
@@ -164,6 +159,10 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         } ?: return
 
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    }
 
+    // Item Click Delegate impl
+    override fun onItemSelected(item: CatsListItem) {
+        presenter.onCatsItemSelected(item)
     }
 }

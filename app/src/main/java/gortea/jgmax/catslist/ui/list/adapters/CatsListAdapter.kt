@@ -5,18 +5,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import gortea.jgmax.catslist.data.local.cats.model.CatsListLocalItem
+import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListItemBinding
 import gortea.jgmax.catslist.databinding.CatsListLoadingBinding
+import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.adapters.holders.CatsItemViewHolder
 import gortea.jgmax.catslist.ui.list.adapters.holders.LoadingViewHolder
+import gortea.jgmax.catslist.ui.list.adapters.viewtypes.ViewTypes
 
 class CatsListAdapter(
     private val loadingOffset: Int = 0,
     private val onLoad: (() -> Unit)? = null
-) : ListAdapter<CatsListLocalItem?, RecyclerView.ViewHolder>(comparator) {
+) : ListAdapter<CatsListItem?, RecyclerView.ViewHolder>(comparator) {
     private var isLoading = false
     private var updateWithError = false
+    private var clickDelegate: ItemClickDelegate? = null
+
+    fun attachClickDelegate(clickDelegate: ItemClickDelegate) {
+        this.clickDelegate = clickDelegate
+    }
 
     fun loadingFinished(withError: Boolean = false) {
         isLoading = false
@@ -43,7 +50,7 @@ class CatsListAdapter(
             }
             else -> {
                 val binding = CatsListItemBinding.inflate(inflater, parent, false)
-                CatsItemViewHolder(binding)
+                CatsItemViewHolder(binding, clickDelegate)
             }
         }
     }
@@ -65,12 +72,12 @@ class CatsListAdapter(
     }
 
     private companion object {
-        private val comparator = object : DiffUtil.ItemCallback<CatsListLocalItem?>() {
-            override fun areItemsTheSame(oldItem: CatsListLocalItem, newItem: CatsListLocalItem): Boolean {
+        private val comparator = object : DiffUtil.ItemCallback<CatsListItem?>() {
+            override fun areItemsTheSame(oldItem: CatsListItem, newItem: CatsListItem): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: CatsListLocalItem, newItem: CatsListLocalItem): Boolean {
+            override fun areContentsTheSame(oldItem: CatsListItem, newItem: CatsListItem): Boolean {
                 return oldItem == newItem
             }
         }
