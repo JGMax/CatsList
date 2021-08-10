@@ -14,6 +14,7 @@ import gortea.jgmax.catslist.data.local.cats.constants.CATS_LIST_SPAN_COUNT
 import gortea.jgmax.catslist.data.local.cats.constants.CATS_LOADING_OFFSET
 import gortea.jgmax.catslist.data.local.cats.constants.ITEM_MARGIN_DP
 import gortea.jgmax.catslist.data.local.cats.constants.ITEM_SPACING_DP
+import gortea.jgmax.catslist.data.local.cats.model.CatsListLocalItem
 import gortea.jgmax.catslist.data.remote.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
@@ -125,7 +126,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView {
         adapter.loadingStarted()
     }
 
-    override fun updateList(items: List<CatsListItem>?) {
+    override fun updateList(items: List<CatsListLocalItem?>?) {
         if (items != null) {
             adapter.submitList(items)
         }
