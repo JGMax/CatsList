@@ -130,8 +130,8 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         val text = when (message) {
             is String -> message
             is Int -> getString(message)
-            else -> null
-        } ?: return
+            else -> return
+        }
 
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }

@@ -86,7 +86,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
     }
 
     private fun onTryAgainClick() {
-        if (adapter.itemCount != 0) return
+        if (presenter.getList().isNotEmpty()) return
         binding.apply {
             tryAgainButton.hide()
             firstLoadingProgressBar.show()
@@ -158,16 +158,18 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
     }
 
     override fun <T> onErrorRequest(message: T) {
-        binding.apply {
-            firstLoadingProgressBar.hide()
-            binding.tryAgainButton.show()
+        if (presenter.getList().isEmpty()) {
+            binding.apply {
+                firstLoadingProgressBar.hide()
+                binding.tryAgainButton.show()
+            }
         }
         adapter.loadingFinished(withError = true)
         val text = when (message) {
             is String -> message
             is Int -> getString(message)
-            else -> null
-        } ?: return
+            else -> return
+        }
 
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
