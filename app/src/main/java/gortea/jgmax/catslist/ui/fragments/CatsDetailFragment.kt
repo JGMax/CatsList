@@ -3,6 +3,7 @@ package gortea.jgmax.catslist.ui.fragments
 import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -53,6 +54,13 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val service = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        presenter.attachDownloadService(service)
+        activity?.registerReceiver(presenter.getDownloadReceiver(), IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,6 +85,11 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.unregisterReceiver(presenter.getDownloadReceiver())
     }
 
     private fun onFavouritesClick() {
@@ -124,16 +137,15 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
     }
 
     override fun onSuccessDownload() {
-
+        binding.downloadBtn.isEnabled = true
     }
 
     override fun onSuccessSaveToFavourites() {
 
     }
 
-    override fun download(request: DownloadManager.Request) {
-        val manager = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        manager.enqueue(request)
+    override fun onStartDownload() {
+        binding.downloadBtn.isEnabled = false
     }
 
     // Instance
