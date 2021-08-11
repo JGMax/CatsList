@@ -64,7 +64,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
         binding.apply {
             setupRecyclerView(catsList)
             tryAgainButton.hide()
-            if (savedInstanceState == null || presenter.getList().isEmpty()) {
+            if (presenter.getList().isEmpty()) {
                 firstLoadingProgressBar.show()
                 fetchCatsList()
             } else {
