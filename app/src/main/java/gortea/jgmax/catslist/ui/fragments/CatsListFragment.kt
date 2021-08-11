@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +64,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
         binding.apply {
             setupRecyclerView(catsList)
             tryAgainButton.hide()
-            if (savedInstanceState == null && adapter.itemCount == 0) {
+            if (savedInstanceState == null || presenter.getList().isEmpty()) {
                 firstLoadingProgressBar.show()
                 fetchCatsList()
             } else {
@@ -73,7 +74,6 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
             favouritesButton.setOnClickListener { onFavouritesClick() }
             tryAgainButton.setOnClickListener { onTryAgainClick() }
         }
-
     }
 
     override fun onDestroyView() {

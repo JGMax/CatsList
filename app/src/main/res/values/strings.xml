@@ -6,4 +6,5 @@
     <string name="try_again_btn">Try again</string>
     <string name="download_btn">Download</string>
     <string name="add_to_favourites_btn">To favourites</string>
+    <string name="write_permission_denied_error">Downloading request read/write permission</string>
 </resources>

@@ -2,6 +2,7 @@ package gortea.jgmax.catslist.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.databinding.ActivityMainBinding
@@ -23,5 +24,10 @@ class MainActivity : AppCompatActivity(), OpenFragmentDelegate {
         transaction.replace(R.id.container, fragment)
         if (toBackStack) transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("activity", "destroyed")
     }
 }

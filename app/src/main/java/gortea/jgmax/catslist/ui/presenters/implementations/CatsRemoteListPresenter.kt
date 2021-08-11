@@ -1,6 +1,5 @@
 package gortea.jgmax.catslist.ui.presenters.implementations
 
-import android.util.Log
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
@@ -47,6 +46,10 @@ class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPres
     }
 
     override fun getList(): List<CatsListItem?> = catsList.toList()
+    override fun setList(list: List<CatsListItem>) {
+        catsList.clear()
+        catsList.addAll(list)
+    }
 
     override fun onDestroy() {
         compositeBag.dispose()

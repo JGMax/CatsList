@@ -2,6 +2,7 @@ package gortea.jgmax.catslist.data.local.cats.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 
 data class CatsListItem(
     val id: String,
@@ -11,7 +12,6 @@ data class CatsListItem(
         inParcel.createStringArray()!![0],
         inParcel.createStringArray()!![1]
     )
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
