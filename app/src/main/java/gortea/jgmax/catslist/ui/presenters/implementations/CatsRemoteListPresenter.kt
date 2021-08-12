@@ -5,7 +5,7 @@ import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.data.remote.cats.api.CatsApi
 import gortea.jgmax.catslist.ui.fragments.CatsDetailFragment
 import gortea.jgmax.catslist.ui.presenters.CatsListPresenterRemote
-import gortea.jgmax.catslist.ui.view.CatsRemoteListView
+import gortea.jgmax.catslist.ui.view.CatsListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -14,7 +14,7 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 
 @InjectViewState
-class CatsRemoteListPresenter : MvpPresenter<CatsRemoteListView>(), CatsListPresenterRemote {
+class CatsRemoteListPresenter : MvpPresenter<CatsListView>(), CatsListPresenterRemote {
     private val catsList: MutableList<CatsListItem?> = mutableListOf()
     private val compositeBag = CompositeDisposable()
 

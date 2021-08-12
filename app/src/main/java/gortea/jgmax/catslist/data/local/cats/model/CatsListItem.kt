@@ -3,6 +3,7 @@ package gortea.jgmax.catslist.data.local.cats.model
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import gortea.jgmax.catslist.data.local.cats.favourites.room.entity.CatsListEntity
 
 data class CatsListItem(
     val id: String,
@@ -31,4 +32,11 @@ data class CatsListItem(
             }
         }
     }
+}
+
+fun CatsListItem.toEntity(): CatsListEntity {
+    return CatsListEntity(
+        id = this.id,
+        url = this.url
+    )
 }

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListItemBinding
 import gortea.jgmax.catslist.databinding.CatsListLoadingBinding
-import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
+import gortea.jgmax.catslist.ui.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.adapters.holders.CatsItemViewHolder
 import gortea.jgmax.catslist.ui.list.adapters.holders.LoadingViewHolder
 import gortea.jgmax.catslist.ui.list.adapters.viewtypes.ViewTypes

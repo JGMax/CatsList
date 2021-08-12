@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import gortea.jgmax.catslist.CatsApp
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsDetailFragmentBinding
@@ -93,7 +94,8 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
     }
 
     private fun onFavouritesClick() {
-        presenter.addToFavourites()
+        val dao = ((activity?.application as? CatsApp)?.catsDao) ?: return
+        presenter.addToFavourites(dao)
     }
 
     private fun onDownloadClick() {
@@ -140,8 +142,12 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         binding.downloadBtn.isEnabled = true
     }
 
-    override fun onSuccessSaveToFavourites() {
+    override fun onStartFavourites() {
+        binding.favouritesBtn.isEnabled = false
+    }
 
+    override fun onSuccessFavourites() {
+        binding.favouritesBtn.isEnabled = true
     }
 
     override fun onStartDownload() {

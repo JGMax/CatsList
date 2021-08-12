@@ -5,7 +5,7 @@ import com.bumptech.glide.Glide
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListItemBinding
-import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
+import gortea.jgmax.catslist.ui.delegates.ItemClickDelegate
 
 class CatsItemViewHolder(
     private val binding: CatsListItemBinding,

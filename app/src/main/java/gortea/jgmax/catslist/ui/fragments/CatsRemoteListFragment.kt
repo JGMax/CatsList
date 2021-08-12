@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,19 +16,19 @@ import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
 import gortea.jgmax.catslist.ui.delegates.OpenFragmentDelegate
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
-import gortea.jgmax.catslist.ui.list.adapters.delegates.ItemClickDelegate
+import gortea.jgmax.catslist.ui.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManager
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManagerImpl
 import gortea.jgmax.catslist.ui.presenters.implementations.CatsRemoteListPresenter
-import gortea.jgmax.catslist.ui.view.CatsRemoteListView
+import gortea.jgmax.catslist.ui.view.CatsListView
 import gortea.jgmax.catslist.utils.hide
 import gortea.jgmax.catslist.utils.show
 import gortea.jgmax.catslist.utils.toPx
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 
-class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDelegate {
+class CatsRemoteListFragment : MvpAppCompatFragment(), CatsListView, ItemClickDelegate {
     private var _binding: CatsListFragmentBinding? = null
     private val binding: CatsListFragmentBinding
         get() = requireNotNull(_binding)
@@ -82,7 +81,7 @@ class CatsListFragment : MvpAppCompatFragment(), CatsRemoteListView, ItemClickDe
     }
 
     private fun onFavouritesClick() {
-        Toast.makeText(context, "Favourites", Toast.LENGTH_SHORT).show()
+        openFragment(CatsFavouritesFragment())
     }
 
     private fun onTryAgainClick() {

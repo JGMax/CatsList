@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import gortea.jgmax.catslist.R
-import gortea.jgmax.catslist.databinding.ActivityMainBinding
 import gortea.jgmax.catslist.ui.delegates.OpenFragmentDelegate
-import gortea.jgmax.catslist.ui.fragments.CatsListFragment
+import gortea.jgmax.catslist.ui.fragments.CatsRemoteListFragment
 
 class MainActivity : AppCompatActivity(), OpenFragmentDelegate {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +14,7 @@ class MainActivity : AppCompatActivity(), OpenFragmentDelegate {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            openFragment(CatsListFragment())
+            openFragment(CatsRemoteListFragment(), false)
         }
     }
 
@@ -24,10 +23,5 @@ class MainActivity : AppCompatActivity(), OpenFragmentDelegate {
         transaction.replace(R.id.container, fragment)
         if (toBackStack) transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("activity", "destroyed")
     }
 }

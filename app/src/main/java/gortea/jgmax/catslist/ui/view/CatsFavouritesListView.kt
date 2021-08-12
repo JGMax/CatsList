@@ -8,7 +8,7 @@ import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(value = OneExecutionStateStrategy::class)
-interface CatsRemoteListView : MvpView {
+interface CatsFavouritesListView : MvpView {
     fun onStartRequest()
     fun updateList(items: List<CatsListItem?>?)
     fun openActivity(intent: Intent?)

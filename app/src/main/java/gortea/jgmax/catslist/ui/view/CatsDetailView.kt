@@ -8,6 +8,7 @@ import moxy.viewstate.strategy.StateStrategyType
 interface CatsDetailView : MvpView {
     fun<T> showError(message: T)
     fun onSuccessDownload()
-    fun onSuccessSaveToFavourites()
+    fun onStartFavourites()
+    fun onSuccessFavourites()
     fun onStartDownload()
 }
