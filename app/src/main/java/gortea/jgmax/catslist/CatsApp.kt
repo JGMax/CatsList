@@ -19,10 +19,10 @@ class CatsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         configureRetrofit()
-        configureDao()
+        configureRoom()
     }
 
-    private fun configureDao() {
+    private fun configureRoom() {
         val db = Room.databaseBuilder(
             applicationContext,
             CatsListDatabase::class.java,

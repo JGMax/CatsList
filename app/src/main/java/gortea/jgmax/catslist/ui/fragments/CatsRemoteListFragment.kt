@@ -1,7 +1,6 @@
 package gortea.jgmax.catslist.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +13,9 @@ import gortea.jgmax.catslist.CatsApp
 import gortea.jgmax.catslist.data.local.cats.constants.*
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListFragmentBinding
+import gortea.jgmax.catslist.ui.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.delegates.OpenFragmentDelegate
 import gortea.jgmax.catslist.ui.list.adapters.CatsListAdapter
-import gortea.jgmax.catslist.ui.delegates.ItemClickDelegate
 import gortea.jgmax.catslist.ui.list.decorators.GridItemDecoration
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManager
 import gortea.jgmax.catslist.ui.list.layoutManagers.FooterGridLayoutManagerImpl
@@ -134,13 +133,6 @@ class CatsRemoteListFragment : MvpAppCompatFragment(), CatsListView, ItemClickDe
     override fun updateList(items: List<CatsListItem?>?) {
         if (items != null) {
             adapter.submitList(items)
-        }
-    }
-
-    override fun openActivity(intent: Intent?) {
-        val pm = activity?.packageManager ?: return
-        intent?.resolveActivity(pm)?.let {
-            startActivity(intent)
         }
     }
 

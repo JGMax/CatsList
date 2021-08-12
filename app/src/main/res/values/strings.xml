@@ -5,7 +5,10 @@
     <string name="connection_error">Connection error</string>
     <string name="try_again_btn">Try again</string>
     <string name="download_btn">Download</string>
-    <string name="add_to_favourites_btn">To favourites</string>
     <string name="write_permission_denied_error">Downloading request read/write permission</string>
     <string name="unknown_error">Something went wrong</string>
+    <string name="favourites_like_btn">Like</string>
+    <string name="favourites_dislike_btn">Dislike</string>
+    <string name="empty_favourites_list_msg">Ooops.... You have no favourite cats</string>
+    <string name="add_to_favourites">Added to favourites</string>
 </resources>

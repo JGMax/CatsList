@@ -7,7 +7,9 @@ class FooterGridLayoutManagerImpl(
 ) : FooterGridLayoutManager {
     override var spanCount: Int
         get() = layoutManager.spanCount
-        set(value) { layoutManager.spanCount = value}
+        set(value) {
+            layoutManager.spanCount = value
+        }
     private var showFooter = false
 
     init {

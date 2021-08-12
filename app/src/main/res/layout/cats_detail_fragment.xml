@@ -28,7 +28,7 @@
         android:id="@+id/favourites_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_to_favourites_btn"
+        android:text="@string/favourites_like_btn"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

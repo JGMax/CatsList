@@ -1,8 +1,7 @@
 package gortea.jgmax.catslist.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.ui.delegates.OpenFragmentDelegate

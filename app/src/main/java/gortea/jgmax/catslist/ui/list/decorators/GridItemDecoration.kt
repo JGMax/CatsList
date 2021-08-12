@@ -12,7 +12,12 @@ class GridItemDecoration(
 
     private val halfSpacing = spacing / 2
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         val columns = (parent.layoutManager as? GridLayoutManager)?.spanCount ?: 1
         val rows = parent.adapter?.itemCount?.div(columns) ?: 1
         val holder = parent.getChildViewHolder(view)

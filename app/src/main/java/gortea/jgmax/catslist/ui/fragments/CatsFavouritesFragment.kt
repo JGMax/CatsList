@@ -1,7 +1,6 @@
 package gortea.jgmax.catslist.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -52,7 +51,7 @@ class CatsFavouritesFragment : MvpAppCompatFragment(), CatsFavouritesListView, I
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (presenter.getList().isEmpty()) {
+        if (savedInstanceState == null) {
             fetchCatsList()
         } else {
             adapter.submitList(presenter.getList())
@@ -66,7 +65,7 @@ class CatsFavouritesFragment : MvpAppCompatFragment(), CatsFavouritesListView, I
     }
 
     private fun setupRecyclerView() {
-        val spanCount = when(resources.configuration.orientation) {
+        val spanCount = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> CATS_LIST_SPAN_COUNT_LANDSCAPE
             else -> CATS_LIST_SPAN_COUNT_PORTRAIT
         }
@@ -88,20 +87,15 @@ class CatsFavouritesFragment : MvpAppCompatFragment(), CatsFavouritesListView, I
     }
 
     // View impl
-    override fun onStartRequest() {
-        //TODO("Not yet implemented")
-    }
 
     override fun updateList(items: List<CatsListItem?>?) {
         if (items != null) {
+            binding.emptyFavouritesTv.visibility = if (items.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
             adapter.submitList(items)
-        }
-    }
-
-    override fun openActivity(intent: Intent?) {
-        val pm = activity?.packageManager ?: return
-        intent?.resolveActivity(pm)?.let {
-            startActivity(intent)
         }
     }
 
@@ -109,11 +103,7 @@ class CatsFavouritesFragment : MvpAppCompatFragment(), CatsFavouritesListView, I
         openFragmentDelegate?.openFragment(fragment)
     }
 
-    override fun onSuccessRequest() {
-        //TODO("Not yet implemented")
-    }
-
-    override fun <T> onErrorRequest(message: T) {
+    override fun <T> onError(message: T) {
         val text = when (message) {
             is String -> message
             is Int -> getString(message)

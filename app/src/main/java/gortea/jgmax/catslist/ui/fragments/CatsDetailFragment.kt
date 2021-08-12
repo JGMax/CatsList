@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +22,12 @@ import gortea.jgmax.catslist.ui.view.CatsDetailView
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.lang.NullPointerException
 
 class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
     private var _binding: CatsDetailFragmentBinding? = null
     private val binding: CatsDetailFragmentBinding
         get() = requireNotNull(_binding)
+    private var isFavourite = false
 
 
     @InjectPresenter
@@ -59,7 +58,10 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         super.onCreate(savedInstanceState)
         val service = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         presenter.attachDownloadService(service)
-        activity?.registerReceiver(presenter.getDownloadReceiver(), IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        activity?.registerReceiver(
+            presenter.getDownloadReceiver(),
+            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        )
     }
 
     override fun onCreateView(
@@ -68,6 +70,7 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         savedInstanceState: Bundle?
     ): View {
         _binding = CatsDetailFragmentBinding.inflate(inflater, container, false)
+        checkContainsFavourite()
         return binding.root
     }
 
@@ -93,9 +96,19 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
         activity?.unregisterReceiver(presenter.getDownloadReceiver())
     }
 
+    private fun checkContainsFavourite() {
+        val dao = ((activity?.application as? CatsApp)?.catsDao) ?: return
+        presenter.containsFavourite(dao)
+    }
+
     private fun onFavouritesClick() {
         val dao = ((activity?.application as? CatsApp)?.catsDao) ?: return
-        presenter.addToFavourites(dao)
+        if (isFavourite) {
+            presenter.removeFromFavourites(dao)
+            parentFragmentManager.popBackStack()
+        } else {
+            presenter.addToFavourites(dao)
+        }
     }
 
     private fun onDownloadClick() {
@@ -147,11 +160,18 @@ class CatsDetailFragment : MvpAppCompatFragment(), CatsDetailView {
     }
 
     override fun onSuccessFavourites() {
-        binding.favouritesBtn.isEnabled = true
+        Toast.makeText(context, R.string.add_to_favourites, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStartDownload() {
         binding.downloadBtn.isEnabled = false
+    }
+
+    override fun checkContainsResult(contains: Boolean) {
+        val stringId =
+            if (contains) R.string.favourites_dislike_btn else R.string.favourites_like_btn
+        binding.favouritesBtn.setText(stringId)
+        isFavourite = contains
     }
 
     // Instance

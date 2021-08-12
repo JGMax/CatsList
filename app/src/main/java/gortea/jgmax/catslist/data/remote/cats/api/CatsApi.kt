@@ -10,5 +10,5 @@ import retrofit2.http.Query
 interface CatsApi {
     @Headers("x-api-key: $API_KEY")
     @GET("./v1/images/search")
-    fun getCatsList(@Query("limit") limit: Int) : Single<List<CatsListRemoteItem>>
+    fun getCatsList(@Query("limit") limit: Int): Single<List<CatsListRemoteItem>>
 }

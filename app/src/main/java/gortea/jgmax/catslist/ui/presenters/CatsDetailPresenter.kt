@@ -10,4 +10,5 @@ interface CatsDetailPresenter {
     fun download()
     fun attachDownloadService(service: DownloadManager)
     fun getDownloadReceiver(): BroadcastReceiver
+    fun containsFavourite(dao: CatsListDao)
 }

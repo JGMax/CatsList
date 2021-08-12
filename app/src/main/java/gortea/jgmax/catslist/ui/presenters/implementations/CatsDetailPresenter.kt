@@ -19,7 +19,8 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 
 @InjectViewState
-class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView>(), CatsDetailPresenter {
+class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView>(),
+    CatsDetailPresenter {
     private var downloadManager: DownloadManager? = null
     private var downloadId = 0L
     private var disposeBag = CompositeDisposable()
@@ -34,12 +35,12 @@ class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView
     }
 
     override fun addToFavourites(dao: CatsListDao) {
-        if(item == null) return
+        if (item == null) return
         viewState.onStartFavourites()
         val disposable = dao.addEntity(item.toEntity())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 viewState.onSuccessFavourites()
             }, {
                 viewState.showError(R.string.unknown_error)
@@ -48,12 +49,12 @@ class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView
     }
 
     override fun removeFromFavourites(dao: CatsListDao) {
-        if(item == null) return
+        if (item == null) return
         viewState.onStartFavourites()
         val disposable = dao.removeEntity(item.toEntity())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 viewState.onSuccessFavourites()
             }, {
                 viewState.showError(R.string.unknown_error)
@@ -69,8 +70,10 @@ class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView
         viewState.onStartDownload()
         val uri = Uri.parse(item.url)
         val request = DownloadManager.Request(uri)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI
-                or DownloadManager.Request.NETWORK_MOBILE)
+        request.setAllowedNetworkTypes(
+            DownloadManager.Request.NETWORK_WIFI
+                    or DownloadManager.Request.NETWORK_MOBILE
+        )
             .setAllowedOverRoaming(false)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setTitle(uri.lastPathSegment)
@@ -84,6 +87,22 @@ class CatsDetailPresenter(val item: CatsListItem?) : MvpPresenter<CatsDetailView
     }
 
     override fun getDownloadReceiver(): BroadcastReceiver = downloadBroadcastReceiver
+
+    override fun containsFavourite(dao: CatsListDao) {
+        if (item == null) return
+        val disposable = dao.containsEntity(item.toEntity())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    viewState.checkContainsResult(it)
+                },
+                {
+                    viewState.showError(R.string.unknown_error)
+                }
+            )
+        disposeBag.add(disposable)
+    }
 
     override fun onDestroy() {
         disposeBag.dispose()
