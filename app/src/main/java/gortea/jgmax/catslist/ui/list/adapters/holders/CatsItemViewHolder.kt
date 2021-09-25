@@ -2,6 +2,7 @@ package gortea.jgmax.catslist.ui.list.adapters.holders
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import gortea.jgmax.catslist.R
 import gortea.jgmax.catslist.data.local.cats.model.CatsListItem
 import gortea.jgmax.catslist.databinding.CatsListItemBinding
@@ -17,6 +18,7 @@ class CatsItemViewHolder(
                 .with(root)
                 .load(item.url)
                 .placeholder(R.drawable.ic_cats_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(catImageView)
             catCardView.setOnClickListener {
