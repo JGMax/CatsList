@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.cats.R
+import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.catslist.data.model.CatModel
 import gortea.jgmax.cats.catslist.list.adapters.delegate.ItemClickDelegate
 import gortea.jgmax.cats.catslist.list.adapters.delegate.LoadingClickDelegate
@@ -13,7 +14,6 @@ import gortea.jgmax.cats.catslist.list.adapters.holders.CatsItemViewHolder
 import gortea.jgmax.cats.catslist.list.adapters.holders.LoadingPresenter
 import gortea.jgmax.cats.catslist.list.adapters.holders.LoadingViewHolder
 import gortea.jgmax.cats.catslist.list.adapters.viewtypes.ViewTypes
-import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.databinding.CatsListItemBinding
 import gortea.jgmax.cats.databinding.CatsListLoadingBinding
 
@@ -80,7 +80,7 @@ class CatsListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is CatsItemViewHolder -> holder.bind(getItem(position) ?: return)
+            is CatsItemViewHolder -> holder.bind(getItem(position) ?: return, position)
             is LoadingViewHolder -> holder.bind(loadingPresenter)
         }
     }

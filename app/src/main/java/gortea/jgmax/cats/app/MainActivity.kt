@@ -1,7 +1,7 @@
 package gortea.jgmax.cats.app
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import gortea.jgmax.cats.R
@@ -21,9 +21,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setController() {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+        val host = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        navStorage.navController = navController
+        navStorage.navController = host.navController
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navStorage.navController = null
     }
 }

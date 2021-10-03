@@ -11,7 +11,7 @@ class CatsItemViewHolder(
     private val binding: CatsListItemBinding,
     private val clickDelegate: ItemClickDelegate?
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: CatModel) {
+    fun bind(item: CatModel, position: Int) {
         with(binding) {
             Glide
                 .with(root)
@@ -20,7 +20,7 @@ class CatsItemViewHolder(
                 .centerCrop()
                 .into(catImageView)
             catCardView.setOnClickListener {
-                clickDelegate?.onItemSelected(item)
+                clickDelegate?.onItemSelected(item, position)
             }
         }
     }

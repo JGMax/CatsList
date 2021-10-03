@@ -1,16 +1,20 @@
 package gortea.jgmax.cats.catslist.fragment
 
+import android.content.res.Configuration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import gortea.jgmax.cats.R
 import gortea.jgmax.cats.app.CATS_PAGE_LIMIT
-import gortea.jgmax.cats.catslist.data.model.CatModel
-import gortea.jgmax.cats.catslist.repository.ListRepository
 import gortea.jgmax.cats.app.state.LoadingState
+import gortea.jgmax.cats.catslist.data.model.CatModel
+import gortea.jgmax.cats.catslist.list.CATS_LIST_SPAN_COUNT_LANDSCAPE
+import gortea.jgmax.cats.catslist.list.CATS_LIST_SPAN_COUNT_PORTRAIT
+import gortea.jgmax.cats.catslist.repository.ListRepository
 import gortea.jgmax.cats.navigation.coordinator.Coordinator
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class CatsListViewModel @Inject constructor(
     private val coordinator: Coordinator,
@@ -42,8 +46,18 @@ class CatsListViewModel @Inject constructor(
         disposeBag.add(disposable)
     }
 
-    fun onItemClick(item: CatModel) {
-        coordinator.navigateToFullView(item.url)
+    fun onItemClick(item: CatModel, position: Int, orientation: Int) {
+        val leftHand = when (orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> {
+                position % CATS_LIST_SPAN_COUNT_PORTRAIT <
+                        (CATS_LIST_SPAN_COUNT_PORTRAIT / 2.0).roundToInt()
+            }
+            else -> {
+                position % CATS_LIST_SPAN_COUNT_LANDSCAPE <
+                        (CATS_LIST_SPAN_COUNT_LANDSCAPE / 2.0).roundToInt()
+            }
+        }
+        coordinator.navigateToFullView(item.url, leftHand)
     }
 
     override fun onCleared() {

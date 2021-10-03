@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import gortea.jgmax.cats.R
-import gortea.jgmax.cats.app.state.UrlCheckState
 import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.core.ViewModelFactory
 import gortea.jgmax.cats.databinding.FullViewFragmentBinding
@@ -35,6 +34,8 @@ class FullViewFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<FullViewViewModel>
+
+    private var url: String = ""
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -61,27 +62,35 @@ class FullViewFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        url = arguments?.getString(IMAGE_URL_ARG) ?: ""
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FullViewFragmentBinding.inflate(inflater, container, false)
-        viewModel.initArgs(arguments)
+        viewModel.checkUrl(url)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeCheckState(view)
+        Glide
+            .with(view)
+            .load(url)
+            .into(binding.catsImageView)
         observeLoadingState()
         binding.downloadBtn.setOnClickListener { onDownloadClick() }
     }
 
-
     private fun observeLoadingState() {
         viewModel.getLoadingState().observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is LoadingState.Default -> {
                     binding.downloadBtn.isEnabled = true
                 }
@@ -100,31 +109,10 @@ class FullViewFragment : Fragment() {
         }
     }
 
-    private fun observeCheckState(root: View) {
-        viewModel.getCheckState().observe(viewLifecycleOwner) {
-            when(it) {
-                is UrlCheckState.Default -> {
-                    binding.downloadBtn.isEnabled = false
-                }
-                is UrlCheckState.Success -> {
-                    binding.downloadBtn.isEnabled = true
-                        Glide
-                            .with(root)
-                            .load(it.data)
-                            .into(binding.catsImageView)
-                }
-                is UrlCheckState.Fail -> {
-                    binding.downloadBtn.isEnabled = true
-                    showMessage(it.msg)
-                }
-            }
-        }
-    }
-
     private fun onDownloadClick() {
         if (isWritePermissionGranted()) {
             val service = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            viewModel.download(service, getString(R.string.download_description))
+            viewModel.download(url, service, getString(R.string.download_description))
         } else {
             requestWritePermission()
         }
@@ -156,13 +144,12 @@ class FullViewFragment : Fragment() {
         _binding = null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         activity?.unregisterReceiver(receiver)
+    }
+
+    companion object {
+        const val IMAGE_URL_ARG = "image_arg"
     }
 }

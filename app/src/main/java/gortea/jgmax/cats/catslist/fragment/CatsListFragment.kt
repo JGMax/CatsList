@@ -110,47 +110,35 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
         binding.apply {
             viewModel.getStateLiveData().observe(viewLifecycleOwner) {
                 when (it) {
-                    is LoadingState.Loading, LoadingState.Default -> onLoadingState()
-                    is LoadingState.Success -> onSuccessState()
-                    is LoadingState.Failed -> onErrorState(it.error)
+                    is LoadingState.Loading, LoadingState.Default -> {
+                        adapter.loadingStarted()
+                        if (firstLoad) {
+                            firstLoadPB.show()
+                            tryAgainButton.hide()
+                        } else {
+                            firstLoadPB.hide()
+                            tryAgainButton.hide()
+                        }
+                    }
+                    is LoadingState.Success -> {
+                        firstLoadPB.hide()
+                        tryAgainButton.hide()
+                        if (firstLoad) {
+                            firstLoad = false
+                        }
+                    }
+                    is LoadingState.Failed -> {
+                        adapter.loadingFinished(withError = true)
+                        showMessage(it.error)
+                        if (firstLoad) {
+                            firstLoadPB.hide()
+                            tryAgainButton.show()
+                        } else {
+                            firstLoadPB.hide()
+                            tryAgainButton.hide()
+                        }
+                    }
                 }
-            }
-        }
-    }
-
-    private fun onErrorState(@StringRes msg: Int) {
-        binding.apply {
-            adapter.loadingFinished(withError = true)
-            showMessage(msg)
-            if (firstLoad) {
-                firstLoadPB.hide()
-                tryAgainButton.show()
-            } else {
-                firstLoadPB.hide()
-                tryAgainButton.hide()
-            }
-        }
-    }
-
-    private fun onSuccessState() {
-        binding.apply {
-            firstLoadPB.hide()
-            tryAgainButton.hide()
-            if (firstLoad) {
-                firstLoad = false
-            }
-        }
-    }
-
-    private fun onLoadingState() {
-        binding.apply {
-            adapter.loadingStarted()
-            if (firstLoad) {
-                firstLoadPB.show()
-                tryAgainButton.hide()
-            } else {
-                firstLoadPB.hide()
-                tryAgainButton.hide()
             }
         }
     }
@@ -159,8 +147,8 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onItemSelected(item: CatModel) {
-        viewModel.onItemClick(item)
+    override fun onItemSelected(item: CatModel, position: Int) {
+        viewModel.onItemClick(item, position, resources.configuration.orientation)
     }
 
     override fun onReloadClick() {

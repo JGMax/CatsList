@@ -6,10 +6,12 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="gortea.jgmax.cats.catslist.fragment.CatsListFragment" />
+        android:name="gortea.jgmax.cats.catslist.fragment.CatsListFragment" >
+    </fragment>
 
     <fragment
         android:id="@+id/fullViewFragment"
-        android:name="gortea.jgmax.cats.fullview.fragment.FullViewFragment" />
+        android:name="gortea.jgmax.cats.fullview.fragment.FullViewFragment" >
+    </fragment>
 
 </navigation>
