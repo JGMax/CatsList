@@ -8,4 +8,8 @@
         android:id="@+id/listFragment"
         android:name="gortea.jgmax.cats.catslist.fragment.CatsListFragment" />
 
+    <fragment
+        android:id="@+id/fullViewFragment"
+        android:name="gortea.jgmax.cats.fullview.fragment.FullViewFragment" />
+
 </navigation>

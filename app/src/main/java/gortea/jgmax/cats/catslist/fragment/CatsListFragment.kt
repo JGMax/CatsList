@@ -2,7 +2,6 @@ package gortea.jgmax.cats.catslist.fragment
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import gortea.jgmax.cats.app.CATS_LOADING_OFFSET
 import gortea.jgmax.cats.app.hide
 import gortea.jgmax.cats.app.show
+import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.app.toPx
 import gortea.jgmax.cats.catslist.data.model.CatModel
 import gortea.jgmax.cats.catslist.list.CATS_LIST_SPAN_COUNT_LANDSCAPE
@@ -28,10 +28,8 @@ import gortea.jgmax.cats.catslist.list.adapters.delegate.ItemClickDelegate
 import gortea.jgmax.cats.catslist.list.adapters.delegate.LoadingClickDelegate
 import gortea.jgmax.cats.catslist.list.decorator.GridItemDecoration
 import gortea.jgmax.cats.catslist.list.manager.FooterGridLayoutManagerImpl
-import gortea.jgmax.cats.catslist.state.LoadingState
 import gortea.jgmax.cats.core.ViewModelFactory
 import gortea.jgmax.cats.databinding.CatsListFragmentBinding
-import kotlinx.android.synthetic.main.cats_list_loading.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -79,7 +77,7 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
         }
         binding.apply {
             setupRecyclerView(catsList)
-            tryAgainButton.setOnClickListener { onTryAgainClick() }
+            tryAgainButton.setOnClickListener { onReloadClick() }
         }
     }
 
@@ -121,30 +119,30 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
     }
 
     private fun onErrorState(@StringRes msg: Int) {
-        Log.e("state", "error")
         binding.apply {
             adapter.loadingFinished(withError = true)
-            showError(msg)
+            showMessage(msg)
             if (firstLoad) {
                 firstLoadPB.hide()
                 tryAgainButton.show()
+            } else {
+                firstLoadPB.hide()
+                tryAgainButton.hide()
             }
         }
     }
 
     private fun onSuccessState() {
-        Log.e("state", "success")
         binding.apply {
+            firstLoadPB.hide()
+            tryAgainButton.hide()
             if (firstLoad) {
-                firstLoadPB.hide()
-                tryAgainButton.hide()
                 firstLoad = false
             }
         }
     }
-    
+
     private fun onLoadingState() {
-        Log.e("state", "loading")
         binding.apply {
             adapter.loadingStarted()
             if (firstLoad) {
@@ -157,8 +155,8 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
         }
     }
 
-    private fun showError(@StringRes msg: Int) {
-        Toast.makeText(context, getString(msg), Toast.LENGTH_SHORT).show()
+    private fun showMessage(@StringRes msg: Int) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemSelected(item: CatModel) {
@@ -166,10 +164,6 @@ class CatsListFragment : Fragment(), ItemClickDelegate, LoadingClickDelegate {
     }
 
     override fun onReloadClick() {
-        viewModel.fetchCatsList()
-    }
-
-    private fun onTryAgainClick() {
         viewModel.fetchCatsList()
     }
 

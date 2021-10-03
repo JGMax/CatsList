@@ -13,7 +13,7 @@ import gortea.jgmax.cats.catslist.list.adapters.holders.CatsItemViewHolder
 import gortea.jgmax.cats.catslist.list.adapters.holders.LoadingPresenter
 import gortea.jgmax.cats.catslist.list.adapters.holders.LoadingViewHolder
 import gortea.jgmax.cats.catslist.list.adapters.viewtypes.ViewTypes
-import gortea.jgmax.cats.catslist.state.LoadingState
+import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.databinding.CatsListItemBinding
 import gortea.jgmax.cats.databinding.CatsListLoadingBinding
 

@@ -1,4 +1,4 @@
-package gortea.jgmax.cats.catslist.state
+package gortea.jgmax.cats.app.state
 
 import androidx.annotation.StringRes
 

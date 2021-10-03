@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gortea.jgmax.cats.app.hide
 import gortea.jgmax.cats.app.show
 import gortea.jgmax.cats.catslist.list.adapters.delegate.LoadingClickDelegate
-import gortea.jgmax.cats.catslist.state.LoadingState
+import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.databinding.CatsListLoadingBinding
 
 class LoadingViewHolder(

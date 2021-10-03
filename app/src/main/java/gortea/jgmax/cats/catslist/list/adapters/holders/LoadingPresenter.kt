@@ -1,6 +1,6 @@
 package gortea.jgmax.cats.catslist.list.adapters.holders
 
-import gortea.jgmax.cats.catslist.state.LoadingState
+import gortea.jgmax.cats.app.state.LoadingState
 
 class LoadingPresenter {
     private var currentLoadingHolder: LoadingViewHolder? = null

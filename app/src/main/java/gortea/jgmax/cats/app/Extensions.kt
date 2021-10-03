@@ -1,8 +1,8 @@
 package gortea.jgmax.cats.app
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.View
-import kotlin.math.roundToInt
 
 fun View.show() {
     visibility = View.VISIBLE
@@ -13,6 +13,10 @@ fun View.hide() {
 }
 
 fun Int.toPx(context: Context): Int {
-    val metrics = context.resources.displayMetrics
-    return (this * (metrics.density)).roundToInt()
+    return TypedValue
+        .applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
 }

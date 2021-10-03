@@ -7,4 +7,7 @@
     <string name="download_btn">Download</string>
     <string name="write_permission_denied_error">Downloading request read/write permission</string>
     <string name="unknown_error">Something went wrong</string>
+
+    <string name="download_success">Download success</string>
+    <string name="download_description">Download cats image</string>
 </resources>

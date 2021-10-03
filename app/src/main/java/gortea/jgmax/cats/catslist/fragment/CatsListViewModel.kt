@@ -7,7 +7,7 @@ import gortea.jgmax.cats.R
 import gortea.jgmax.cats.app.CATS_PAGE_LIMIT
 import gortea.jgmax.cats.catslist.data.model.CatModel
 import gortea.jgmax.cats.catslist.repository.ListRepository
-import gortea.jgmax.cats.catslist.state.LoadingState
+import gortea.jgmax.cats.app.state.LoadingState
 import gortea.jgmax.cats.navigation.coordinator.Coordinator
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
