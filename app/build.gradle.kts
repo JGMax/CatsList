@@ -51,9 +51,6 @@ android {
 }
 
 dependencies {
-    // LeakCanary
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-
     // RxJava
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
@@ -94,9 +91,12 @@ dependencies {
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
 
+    // Tests
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
 }
 
 ktlint {
